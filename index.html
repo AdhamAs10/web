@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MTW App Template</title>
     <!--
         The tailwind CDN is designed for development purposes only, and is not the best choice for production.
@@ -12,21 +11,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- example for dark theme styling when using tailwind cdn -->
     <style>
-        /*examples for dark/light themes*/
-        .dark .dark\:text-white {
-            color: #fff;
-        }
-        .dark .dark\:bg-gray-800 {
-            background-color: #1f2937;
-        }
-        .light .light\:text-black {
-            color: #000;
-        }
+      /*examples for dark/light themes*/
+      .dark .dark\:text-white {
+        color: #fff;
+      }
+      .dark .dark\:bg-gray-800 {
+        background-color: #1f2937;
+      }
+      .light .light\:text-black {
+        color: #000;
+      }
 
-        /*add your custom css rules here*/
-        button {
+      /*add your custom css rules here*/
+      button {
         color: black;
-        width: 60px;
+        width: 72px;
         height: 50px;
         border: 4px solid black;
         border-radius: 3px;
@@ -38,72 +37,234 @@
         font-size: 40px;
       }
       button:hover {
-        background-color:lightgreen;
+        background-color: lightgreen;
         border-color: blue;
         color: brown;
       }
-      .cal{
+      smallbutton {
+        color: black;
+        width: 60px;
+        height: 30px;
+        cursor: pointer;
+        float: left;
+        padding: 0px 0px;
+        margin: 0px 0px;
+        background-color: blanchedalmond;
+        font-size: 20px;
+        text-align: center;
+      }
+      smallbutton:hover {
+        background-color: lightgreen;
+        border-color: blue;
+        color: brown;
+      }
+      .cal {
         background-color: wheat;
         border: 5px solid black;
-        width: 250px;
-        height: 338px;
-
+        width: 370px;
+        height: 468px;
       }
     </style>
-</head>
+    <!-- ... previous code ... -->
 
-<body class="dark:text-white light:text-black">
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const display = document.querySelector(".cal .result");
 
+          let currentInput = "";
+
+          // Function to update the display
+          const updateDisplay = () => {
+            display.textContent = currentInput;
+          };
+
+          // Function to handle button clicks
+          const handleButtonClick = (buttonValue) => {
+            switch (buttonValue) {
+              case "=":
+                try {
+                  currentInput = eval(currentInput);
+                  updateDisplay();
+                } catch (error) {
+                  currentInput = "Error";
+                  updateDisplay();
+                }
+                break;
+
+              case "|x|":
+                if (parseFloat(currentInput) < 0)
+                  currentInput = (parseFloat(currentInput) * -1).toString();
+                updateDisplay();
+                break;
+
+              case "1/x":
+                currentInput = (1 / parseFloat(currentInput)).toString();
+                updateDisplay();
+                break;
+
+              case "2√x":
+                if (parseFloat(currentInput) < 0)
+                  currentInput = "Error";
+                currentInput = (Math.sqrt(parseFloat(currentInput))).toString();
+                updateDisplay();
+                break;
+
+              case "log":
+                currentInput = Math.log10(parseFloat(currentInput)).toString();
+                updateDisplay();
+                break;
+
+              case "ln":
+                currentInput = Math.log(parseFloat(currentInput)).toString();
+                updateDisplay();
+                break;
+
+              case "10x":
+                currentInput = Math.pow(10, parseFloat(currentInput)).toString();
+                updateDisplay();
+                break;
+
+              case "C":
+                currentInput = "";
+                updateDisplay();
+                break;
+              case "+/-":
+                currentInput = (parseFloat(currentInput) * -1).toString();
+                updateDisplay();
+                break;
+              case "delete":
+                currentInput = currentInput.substring(0, currentInput.length - 1);
+                updateDisplay();
+                break;
+
+              case "x2":
+                currentInput = currentInput * currentInput;
+                updateDisplay();
+                break;
+              default:
+                currentInput += buttonValue;
+                updateDisplay();
+                break;
+            }
+          };
+
+          // Attach click event listeners to all buttons
+          const buttons = document.querySelectorAll(
+            ".cal button, .cal smallbutton"
+          );
+          buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+              handleButtonClick(button.textContent);
+            });
+          });
+        });
+    </script>
+
+    <!-- ... remaining code ... -->
+  </head>
+
+  <body class="dark:text-white light:text-black">
     <!-- your app code goes here -->
     <div class="cal" style="margin: 50px 620px">
-        <div style="background-color: gray; color: blue; text-align: center;font-size: 25px; width: 240px; height: 30px;">Calculator</div>
-        <div style="border: 5px solid red; background-color: black; text-align: center;font-size: 30px; width: 240px; height: 50px;"></div>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>+</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>-</button>
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
-        <button>*</button>
-        <button>0</button>
-        <button>**</button>
-        <button>/</button>
-        <button>Clr</button>
-        <button style="width: 240px;">=</button>
+      <div
+        style="
+          background-color: gray;
+          color: blue;
+          text-align: center;
+          font-size: 25px;
+          width: 360px;
+          height: 30px;
+        "
+      >
+        Calculator
+      </div>
+      <div
+        class="result"
+        style="
+          border: 5px solid red;
+          background-color: black;
+          color: white;
+          text-align: center;
+          font-size: 30px;
+          width: 360px;
+          height: 50px;
+        "
+      ></div>
+      <smallbutton>MC</smallbutton>
+      <smallbutton>MR</smallbutton>
+      <smallbutton>M+</smallbutton>
+      <smallbutton>M-</smallbutton>
+      <smallbutton>MS</smallbutton>
+      <smallbutton>M^</smallbutton>
+
+      <button>2nd</button>
+      <button>1/x</button>
+      <button>|x|</button>
+      <button>exp</button>
+      <button>mod</button>
+
+      <button>x<sup>2</sup></button>
+      <button>π</button>
+      <button>e</button>
+      <button>C</button>
+      <button>delete</button>
+
+      <button><sup>2</sup>&radic;x</button>
+      <button>(</button>
+      <button>)</button>
+      <button>n!</button>
+      <button>/</button>
+
+      <button>x<sup>y</sup></button>
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button>*</button>
+
+      <button>10<sup>x</sup></button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>-</button>
+
+      <button>log</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>+</button>
+
+      <button>ln</button>
+      <button>+/-</button>
+      <button>0</button>
+      <button>.</button>
+      <button style="background-color: aqua">=</button>
     </div>
 
     <!-- special scripts for integration in App Gallery - must be placed at the bottom of the HTML after your code -->
     <script>
-        // custom config for the MTW app 
-        const mtwAppConfig = {
-            border: true // app border in the MTW page                    
-        }
+      // custom config for the MTW app
+      const mtwAppConfig = {
+        border: true, // app border in the MTW page
+      };
 
-        ///////////////////////////////////////////////////////
-        // implement this functions in order to use private API        
-        const sendPrivateApiRequest = async () => {
-            // your code here:
-            // sendRequestToParent({ cat: 'getAssets' })
-        }        
+      ///////////////////////////////////////////////////////
+      // implement this functions in order to use private API
+      const sendPrivateApiRequest = async () => {
+        // your code here:
+        // sendRequestToParent({ cat: 'getAssets' })
+      };
 
-        const acceptPrivateApiResponse = async (data) => {
-            // process received data here:
-            // console.log(data)
-        }
+      const acceptPrivateApiResponse = async (data) => {
+        // process received data here:
+        // console.log(data)
+      };
 
-        // use this in order to send on document load
-        document.addEventListener('DOMContentLoaded', () => {
-            // your code here:
-            //sendRequestToParent({ method: 'getAssets' })
-        })
-
+      // use this in order to send on document load
+      document.addEventListener("DOMContentLoaded", () => {
+        // your code here:
+        //sendRequestToParent({ method: 'getAssets' })
+      });
     </script>
     <script src="https://morethanwallet.com/appstore/index.js"></script>
-</body>
-
+  </body>
 </html>
